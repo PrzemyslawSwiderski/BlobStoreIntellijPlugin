@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.config.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 repositories {
     jcenter()
     maven { setUrl("http://dl.bintray.com/jetbrains/intellij-plugin-service") }
@@ -5,6 +8,7 @@ repositories {
 
 plugins {
     java
+    kotlin("jvm") version "1.3.41"
     id("org.jetbrains.intellij") version "0.4.9"
 }
 
@@ -26,7 +30,8 @@ tasks {
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+tasks.withType<KotlinCompile> {
+    sourceCompatibility = JvmTarget.JVM_1_8.name
+    targetCompatibility = sourceCompatibility
+    kotlinOptions.suppressWarnings = true
 }
