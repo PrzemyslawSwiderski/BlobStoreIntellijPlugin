@@ -1,4 +1,4 @@
-package com.swidersk
+package com.intellij.ide.blobstore
 
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.project.Project
