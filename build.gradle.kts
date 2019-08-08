@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 repositories {
     jcenter()
+    mavenCentral()
     maven { setUrl("http://dl.bintray.com/jetbrains/intellij-plugin-service") }
 }
 
@@ -13,7 +14,12 @@ plugins {
 }
 
 dependencies {
-    testCompile("junit:junit:4.12")
+    compile(project(":jclouds-shadow", "shadow"))
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.1")
+    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.19")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.1")
+
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
@@ -23,15 +29,19 @@ intellij {
 }
 
 tasks {
+    withType<KotlinCompile> {
+        sourceCompatibility = JvmTarget.JVM_1_8.name
+        targetCompatibility = sourceCompatibility
+        kotlinOptions.suppressWarnings = true
+    }
 
     patchPluginXml {
         untilBuild("201.*")
         setVersion(project.version)
     }
-}
 
-tasks.withType<KotlinCompile> {
-    sourceCompatibility = JvmTarget.JVM_1_8.name
-    targetCompatibility = sourceCompatibility
-    kotlinOptions.suppressWarnings = true
+    test {
+        useJUnitPlatform()
+    }
+
 }
